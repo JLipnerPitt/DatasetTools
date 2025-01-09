@@ -45,8 +45,8 @@ def printnumbers(n):
     print("-{} ".format(n),end='')
 
 dir = select_folder()
-str = "HarribelIllusV8"
-rename_files(dir,str)
+#str = "HarribelIllusV9"
+#ename_files(dir,str)
 
-#printnumbers(25)
+printnumbers(20)
 #remove_text(dir,"_cleanup")
