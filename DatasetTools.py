@@ -1,6 +1,16 @@
 import os
 import tkinter as tk
+import shutil
 from tkinter import filedialog
+from PIL import Image
+
+def create_folder(dir, folder_name="temp"):
+    directory = dir
+    folder_path = os.path.join(directory, folder_name)  # joins creates directory/folder_name path
+    if os.path.exists(folder_path):
+        shutil.rmtree(folder_path)  # delete folder if it already exists
+    os.makedirs(folder_path)  # creates folder in specified directory
+    return folder_path
 
 def select_folder():
 
@@ -15,7 +25,8 @@ def select_folder():
 
     return folder_selected
 
-def rename_files(directory, name, count=1):
+def rename_files(name, count=1):
+    directory = select_folder()
     i = count
     for file in os.listdir(directory):
         old = os.path.join(directory, file)
@@ -27,14 +38,15 @@ def rename_files(directory, name, count=1):
 
         os.rename(old,new)
         i += 1
-    os.startfile(dir) # open the C:\Windows folder
+    os.startfile(directory) # open the C:\Windows folder
 
-def remove_text(directory, text):
+def remove_text(text):
+    directory = select_folder()
     for file in os.listdir(directory):
         old = os.path.join(directory, file)
         new = old.replace(text,'')
         os.rename(old,new)
-    os.startfile(dir) # open the C:\Windows folder
+    os.startfile(directory) # open the C:\Windows folder
 
 def printnumbers(n):
     for i in range(n-1):
@@ -44,9 +56,27 @@ def printnumbers(n):
             print("-{}, ".format(i+1),end='')
     print("-{} ".format(n),end='')
 
-dir = select_folder()
-#str = "HarribelIllusV9"
-#ename_files(dir,str)
+def check_resolution():
+    dir = select_folder()
+    imgs = []
+    for file in os.listdir(dir):
+        img = Image.open(os.path.join(dir, file))
+        width, height = img.size
+        resolution = width*height
+        if width != 1024 and height != 1024:
+            imgs.append(os.path.join(dir, file))
+    
+    if len(imgs) == 0:
+        return
+    else:
+        new_folder = create_folder(dir)
+        for file in imgs:
+            shutil.copy(file, new_folder)
 
-printnumbers(20)
-#remove_text(dir,"_cleanup")
+
+                
+#rename_files("HarribelIllusV18")
+
+#check_resolution()
+#printnumbers(15)
+remove_text("_cleanup")
