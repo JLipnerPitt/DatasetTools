@@ -73,10 +73,32 @@ def check_resolution():
         for file in imgs:
             shutil.copy(file, new_folder)
 
+def separate_images(tag: str):
+    dir = select_folder()
+    directory2 = create_folder("with", os.path.dirname(dir))
+    directory3 = create_folder("without", os.path.dirname(dir))
+
+    for filename in os.listdir(dir):
+        if filename.endswith(".txt"):  # Ensure we're only looking at .txt files
+            with open(os.path.join(dir, filename), 'r') as file:
+                contents = file.read()
+                if tag in contents:
+                    txtfile = os.path.join(dir, filename)
+                    imgfile = os.path.join(dir, filename.replace('.txt', '.jpg'))
+                    shutil.copy(txtfile, directory2)
+                    shutil.copy(imgfile, directory2)
+                else:
+                    txtfile = os.path.join(dir, filename)
+                    imgfile = os.path.join(dir, filename.replace('.txt', '.jpg'))
+                    shutil.copy(txtfile, directory3)
+                    shutil.copy(imgfile, directory3)
+
+
 
                 
-#rename_files("HarribelIllusV18")
+#rename_files("HarribelIllusV24")
 
 #check_resolution()
 #printnumbers(15)
-remove_text("_cleanup")
+#remove_text("_cleanup")
+separate_images("huge weapon")
